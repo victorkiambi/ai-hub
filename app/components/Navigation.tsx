@@ -12,6 +12,7 @@ import {
   Wrench,
   FileText,
 } from 'lucide-react';
+import { analytics } from '@/lib/analytics';
 
 const navItems = [
   { id: 'home', label: 'Home', icon: Home },
@@ -30,6 +31,7 @@ export default function Navigation() {
   // Close mobile menu when clicking a link
   const handleNavClick = (id: string) => {
     setIsOpen(false);
+    analytics.navigation.scrollToSection(id);
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });

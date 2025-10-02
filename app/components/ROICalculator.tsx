@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Trash2, DollarSign, Clock, TrendingUp, Briefcase } from 'lucide-react';
+import { analytics } from '@/lib/analytics';
 
 interface Automation {
   id: string;
@@ -19,6 +20,7 @@ export default function ROICalculator() {
 
   const addAutomation = () => {
     if (automations.length < 10) {
+      analytics.roiCalculator.addTask();
       setAutomations([
         ...automations,
         {
@@ -34,6 +36,7 @@ export default function ROICalculator() {
 
   const removeAutomation = (id: string) => {
     if (automations.length > 1) {
+      analytics.roiCalculator.removeTask(automations.length - 1);
       setAutomations(automations.filter((auto) => auto.id !== id));
     }
   };
@@ -43,6 +46,28 @@ export default function ROICalculator() {
       automations.map((auto) => (auto.id === id ? { ...auto, [field]: value } : auto))
     );
   };
+
+  // Track calculations when automations change
+  useEffect(() => {
+    const validAutomations = automations.filter(auto => 
+      auto.taskName && 
+      auto.timeBefore > 0 && 
+      auto.timeAfter > 0 && 
+      auto.frequencyPerWeek > 0
+    );
+    
+    if (validAutomations.length > 0) {
+      validAutomations.forEach(auto => {
+        analytics.roiCalculator.calculate({
+          taskName: auto.taskName,
+          frequency: auto.frequencyPerWeek,
+          beforeDuration: auto.timeBefore,
+          afterDuration: auto.timeAfter,
+          hourlyRate: hourlyRate
+        });
+      });
+    }
+  }, [automations, hourlyRate]);
 
   // Calculate savings for each automation
   const calculateAutomationSavings = (automation: Automation) => {

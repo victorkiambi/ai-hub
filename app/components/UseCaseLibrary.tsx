@@ -16,6 +16,7 @@ import {
   Wrench,
 } from 'lucide-react';
 import { useCases, industries } from '@/lib/data/useCases';
+import { analytics } from '@/lib/analytics';
 
 const industryIcons = {
   briefcase: Briefcase,
@@ -38,12 +39,22 @@ export default function UseCaseLibrary() {
       await navigator.clipboard.writeText(prompt);
       setCopiedPrompt(id);
       setTimeout(() => setCopiedPrompt(null), 2000);
+      
+      // Track copy event
+      const useCase = useCases.find(uc => uc.id === id);
+      if (useCase) {
+        analytics.useCaseLibrary.copyPrompt(useCase.task, useCase.industry);
+      }
     } catch (err) {
       console.error('Failed to copy:', err);
     }
   };
 
   const toggleCase = (id: string) => {
+    const useCase = useCases.find(uc => uc.id === id);
+    if (useCase && expandedCase !== id) {
+      analytics.useCaseLibrary.expandUseCase(useCase.task, useCase.industry);
+    }
     setExpandedCase(expandedCase === id ? null : id);
   };
 
@@ -73,6 +84,7 @@ export default function UseCaseLibrary() {
                 <button
                   key={industry.id}
                   onClick={() => {
+                    analytics.useCaseLibrary.filterByIndustry(industry.id);
                     setSelectedIndustry(industry.id);
                     setExpandedCase(null);
                   }}

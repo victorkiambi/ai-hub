@@ -19,6 +19,7 @@ import {
   DollarSign,
 } from 'lucide-react';
 import { tools, categories } from '@/lib/data/tools';
+import { analytics } from '@/lib/analytics';
 
 const categoryIcons = {
   sparkles: Sparkles,
@@ -45,6 +46,10 @@ export default function ToolsGuide() {
   });
 
   const toggleTool = (id: string) => {
+    const tool = tools.find(t => t.id === id);
+    if (tool && expandedTool !== id) {
+      analytics.toolsGuide.expandTool(tool.name, tool.category);
+    }
     setExpandedTool(expandedTool === id ? null : id);
   };
 
@@ -69,7 +74,10 @@ export default function ToolsGuide() {
           {/* Free Only Toggle */}
           <div className="flex justify-center mb-4">
             <button
-              onClick={() => setShowFreeOnly(!showFreeOnly)}
+              onClick={() => {
+                analytics.toolsGuide.toggleFreeOnly(!showFreeOnly);
+                setShowFreeOnly(!showFreeOnly);
+              }}
               className={`flex items-center gap-2 px-6 py-2 rounded-lg border-2 font-medium transition-all ${
                 showFreeOnly
                   ? 'bg-green-600 text-white border-green-600'
@@ -85,6 +93,7 @@ export default function ToolsGuide() {
           <div className="flex flex-wrap gap-3 justify-center">
             <button
               onClick={() => {
+                analytics.toolsGuide.filterByCategory('all');
                 setSelectedCategory('all');
                 setExpandedTool(null);
               }}
@@ -106,6 +115,7 @@ export default function ToolsGuide() {
                 <button
                   key={category.id}
                   onClick={() => {
+                    analytics.toolsGuide.filterByCategory(category.id);
                     setSelectedCategory(category.id);
                     setExpandedTool(null);
                   }}
