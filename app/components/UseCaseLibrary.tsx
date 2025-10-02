@@ -15,7 +15,7 @@ import {
   Clock,
   Wrench,
 } from 'lucide-react';
-import { useCases, industries, type UseCase } from '@/lib/data/useCases';
+import { useCases, industries } from '@/lib/data/useCases';
 
 const industryIcons = {
   briefcase: Briefcase,

@@ -302,7 +302,7 @@ export default function ROICalculator() {
                     <div className="bg-white/10 rounded-lg p-4">
                       <div className="flex items-center gap-2 mb-2">
                         <Briefcase size={20} />
-                        <h4 className="font-semibold">That's equivalent to:</h4>
+                        <h4 className="font-semibold">That&apos;s equivalent to:</h4>
                       </div>
                       <p className="text-lg">
                         {totals.workWeeks.toFixed(1)} work weeks
@@ -320,7 +320,7 @@ export default function ROICalculator() {
                 <h4 className="font-bold text-yellow-900 mb-3">💡 Tips for Accuracy</h4>
                 <ul className="space-y-2 text-sm text-yellow-800">
                   <li>• Track actual time for one week before estimating</li>
-                  <li>• Include setup and review time in "After AI" duration</li>
+                  <li>• Include setup and review time in &quot;After AI&quot; duration</li>
                   <li>• Be conservative with time savings estimates</li>
                   <li>• Consider training time in your calculations</li>
                 </ul>

@@ -18,7 +18,7 @@ import {
   X,
   DollarSign,
 } from 'lucide-react';
-import { tools, categories, type Tool } from '@/lib/data/tools';
+import { tools, categories } from '@/lib/data/tools';
 
 const categoryIcons = {
   sparkles: Sparkles,
@@ -48,26 +48,7 @@ export default function ToolsGuide() {
     setExpandedTool(expandedTool === id ? null : id);
   };
 
-  const categoryColors: Record<string, string> = {
-    general: 'blue',
-    writing: 'purple',
-    research: 'green',
-    communication: 'indigo',
-    data: 'orange',
-    creative: 'pink',
-    code: 'gray',
-    voice: 'teal',
-  };
 
-  const getColorClasses = (category: string) => {
-    const color = categoryColors[category] || 'blue';
-    return {
-      bg: `bg-${color}-50`,
-      border: `border-${color}-200`,
-      text: `text-${color}-600`,
-      badge: `bg-${color}-100 text-${color}-700`,
-    };
-  };
 
   return (
     <section id="tools-guide" className="bg-white py-12 sm:py-16 lg:py-20">
